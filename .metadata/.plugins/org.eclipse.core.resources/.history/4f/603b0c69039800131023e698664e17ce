@@ -1,0 +1,78 @@
+#pragma version(1)
+#pragma rs java_package_name(com.clintonwong.renderscripttest)
+
+#define C_PI 3.141592653589793238462643383279502884197169399375
+const uchar4* input;
+uchar4* output;
+int width;
+int height;
+
+static uchar4 getPixelAt(int, int);
+void setPixelAt(int, int, uchar4);
+void swirl();
+void shrink();
+void bulge();
+
+void rediculousBulge() {
+	for (int i=0; i < width; i++)
+	{
+		for (int j=0; j < height; j++)
+		{
+			setPixelAt(i, j, getPixelAt(i - 300, j - 300));
+		}
+	}
+}
+
+void shrink() {
+	float wCenter = width/2.0f;
+	float hCenter = height/2.0f;
+	
+	for(int i = 0; i < width; i++)
+	{
+		for(int j=0; j<height; j++)
+		{
+			float radius = sqrt(pow(i - wCenter, 2.0f) + pow(j - hCenter, 2.0f));
+			float angle = atan2(i - wCenter, j - hCenter);
+			float newRadius = pow(radius, 0.5f);
+			
+			int sourceX = floor(newRadius * cos(angle) + wCenter);
+			int sourceY = floor(newRadius * sin(angle) + hCenter);
+			
+			setPixelAt(i, j, getPixelAt(sourceX, sourceY));
+		}
+	}
+}
+
+void bulge() {
+	float wCenter = width/2.0f;
+	float hCenter = height/2.0f;
+	
+	for(int i = 0; i < width; i++)
+	{
+		for(int j=0; j<height; j++)
+		{
+			float radius = sqrt(pow(i - wCenter, 2.0f) + pow(j - hCenter, 2.0f));
+			float angle = atan2(i - wCenter, j - hCenter);
+			float newRadius = pow(radius, 1.3f);
+			
+			int sourceX = floor(newRadius * cos(angle) + wCenter);
+			int sourceY = floor(newRadius * sin(angle) + hCenter);
+			
+			setPixelAt(i, j, getPixelAt(sourceX, sourceY));
+		}
+	}
+}
+
+// a convenience method to clamp getting pixels into the image
+static uchar4 getPixelAt(int x, int y) {
+	if(y>=height) y = height - 1;
+	if(y < 0) y = 0;
+	if(x >= width) x = width - 1;
+	if(x < 0) x = 0;
+	return input[y*width + x];
+}
+
+//take care of setting x,y on the 1d-array representing the bitmap
+void setPixelAt(int x, int y, uchar4 pixel) {
+	output[y*width + x] = pixel;
+}

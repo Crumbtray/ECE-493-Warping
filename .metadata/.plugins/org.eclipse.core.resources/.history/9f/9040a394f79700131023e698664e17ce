@@ -1,0 +1,14 @@
+package com.photofilter;
+
+import java.util.*;
+
+import android.graphics.Bitmap;
+
+public class FilterUndoManager {
+	private Stack<Bitmap> undoStack;
+	private int size;
+	
+	public FilterUndoManager(int size) {
+		undoStack = new Stack<Bitmap>();
+	}
+}

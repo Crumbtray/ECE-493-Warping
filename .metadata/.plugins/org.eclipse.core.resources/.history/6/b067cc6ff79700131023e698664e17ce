@@ -1,0 +1,7 @@
+package com.photofilter;
+
+import java.util.*;
+
+public class FilterUndoManager {
+	
+}

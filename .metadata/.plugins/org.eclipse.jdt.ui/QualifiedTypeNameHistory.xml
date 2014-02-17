@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="android.renderscript.RSSurfaceView"/>
+<fullyQualifiedTypeName name="android.widget.ImageView"/>
+<fullyQualifiedTypeName name="com.clintonwong.renderscripttest.R.id"/>
+<fullyQualifiedTypeName name="com.clintonwong.renderscripttest.R.drawable"/>
+<fullyQualifiedTypeName name="android.graphics.BitmapFactory"/>
+<fullyQualifiedTypeName name="android.graphics.Bitmap"/>
+<fullyQualifiedTypeName name="android.renderscript.Allocation.MipmapControl"/>
+<fullyQualifiedTypeName name="com.clintonwong.renderscripttest.R.raw"/>
+<fullyQualifiedTypeName name="com.photofilter.R.id"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="android.os.Environment"/>
+<fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+</qualifiedTypeNameHistroy>

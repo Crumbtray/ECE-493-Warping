@@ -1,0 +1,78 @@
+#pragma version(1)
+#pragma rs java_package_name(com.clintonwong.renderscripttest)
+
+#define C_PI 3.141592653589793238462643383279502884197169399375
+const uchar4* input;
+uchar4* output;
+int width;
+int height;
+
+static uchar4 getPixelAt(int, int);
+void setPixelAt(int, int, uchar4);
+void Swirl(double factor);
+
+void Swirl(double factor) {
+	double cX = (double)width/2.0f;
+	double cY = (double)height/2.0f;
+	
+	for (int i=0; i < height; i++)
+	{
+		double relY = cY-i;
+		for (int j=0; j < width; j++)
+		{
+			float relX = j-cX;
+			double originalAngle;
+
+			if (relX != 0)
+			{
+				originalAngle = atan(abs(relY)/abs(relX));
+
+				if ( relX > 0 && relY < 0) originalAngle = 2.0f*C_PI - originalAngle;
+
+				else if (relX <= 0 && relY >=0) originalAngle = C_PI-originalAngle;
+
+				else if (relX <=0 && relY <0) originalAngle += C_PI;
+			}
+
+			else
+			{
+				// Take care of rare special case
+				if (relY >= 0) originalAngle = 0.5f * C_PI;
+
+				else originalAngle = 1.5f * C_PI;
+			}
+			
+			// Calculate the distance from the center of the UV using pythagorean distance
+			double radius = sqrt(relX*relX + relY*relY);
+
+			// Use any equation we want to determine how much to rotate image by
+			//double newAngle = originalAngle + factor*radius;	// a progressive twist
+			double newAngle = originalAngle + 1/(factor*radius+(4.0f/C_PI));
+
+			// Transform source UV coordinates back into bitmap coordinates
+			int srcX = (int)(floor(radius * cos(newAngle)+0.5f));
+
+			int srcY = (int)(floor(radius * sin(newAngle)+0.5f));
+
+			srcX += cX;
+			srcY += cY;
+			srcY = height - srcY;
+			
+			setPixelAt(i, j, getPixelAt(srcX, srcY));
+		}
+	}
+}
+
+// a convenience method to clamp getting pixels into the image
+static uchar4 getPixelAt(int x, int y) {
+	if(y>=height) y = height - 1;
+	if(y < 0) y = 0;
+	if(x >= width) x = width - 1;
+	if(x < 0) x = 0;
+	return input[y*width + x];
+}
+
+//take care of setting x,y on the 1d-array representing the bitmap
+void setPixelAt(int x, int y, uchar4 pixel) {
+	output[y*width + x] = pixel;
+}
